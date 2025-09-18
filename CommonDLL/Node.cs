@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace CommonDLL
 {
     public class Node
     {

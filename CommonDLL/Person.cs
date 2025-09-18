@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace CommonDLL
 {
     public class Person
     {
@@ -21,13 +21,7 @@
                 return false;
 
             Person other = (Person)obj;
-            return Vorname == other.Vorname && Nachname == other.Nachname &&
-                   Geschlecht == other.Geschlecht && Alter == other.Alter;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Vorname, Nachname, Geschlecht, Alter);
+            return Vorname == other.Vorname && Nachname == other.Nachname && Geschlecht == other.Geschlecht && Alter == other.Alter;
         }
     }
 }
