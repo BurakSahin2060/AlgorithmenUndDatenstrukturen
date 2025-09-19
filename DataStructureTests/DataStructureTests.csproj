@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommonDLL\CommonDLL.csproj" />
+    <ProjectReference Include="..\DataStructuresDLL\DataStructuresDLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
