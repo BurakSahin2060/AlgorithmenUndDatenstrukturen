@@ -1,19 +1,16 @@
 using NUnit.Framework;
-using DataStructures;
 using CommonDLL;
 
 namespace DataStructureTests
 {
     public class Tests
     {
-        private SingleLinkedList list;
-
+        private SingleLinkedList<Person> list;
         [SetUp]
         public void Setup()
         {
-            list = new SingleLinkedList();
+            list = new SingleLinkedList<Person>();
         }
-
         [Test]
         public void AddPerson_ShouldAddPersonToList()
         {
@@ -21,7 +18,6 @@ namespace DataStructureTests
             list.Add(person);
             Assert.IsTrue(list.Contains(person), "Die Person sollte in der Liste enthalten sein.");
         }
-
         [Test]
         public void ContainsPerson_WhenPersonNotInList_ShouldReturnFalse()
         {
@@ -30,14 +26,12 @@ namespace DataStructureTests
             list.Add(person1);
             Assert.IsFalse(list.Contains(person2), "Die Person sollte nicht in der Liste enthalten sein.");
         }
-
         [Test]
         public void ContainsPerson_WhenListEmpty_ShouldReturnFalse()
         {
             Person person = new Person("Anna", "Schmidt", "Weiblich", 25);
             Assert.IsFalse(list.Contains(person), "Die leere Liste sollte keine Person enthalten.");
         }
-
         [Test]
         public void AddMultiplePersons_ShouldContainAll()
         {
