@@ -88,4 +88,20 @@ public class SingleLinkedList<T>
             current = current.Next;
         }
     }
+
+    public int PosOfElement(T element)
+    {
+        Node<T> current = head;
+        int position = 0;
+        while (current != null)
+        {
+            if (current.Data.Equals(element))
+            {
+                return position;
+            }
+            current = current.Next;
+            position++;
+        }
+        return -1;
+    }
 }
