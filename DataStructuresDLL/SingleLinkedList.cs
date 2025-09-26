@@ -18,6 +18,7 @@ public class SingleLinkedList<T>
     {
         head = null;
     }
+
     public void Add(T data)
     {
         Node<T> newNode = new Node<T>(data);
@@ -35,6 +36,7 @@ public class SingleLinkedList<T>
             current.Next = newNode;
         }
     }
+
     public bool Contains(T data)
     {
         Node<T> current = head;
@@ -47,5 +49,43 @@ public class SingleLinkedList<T>
             current = current.Next;
         }
         return false;
+    }
+
+    public void InsertBefore(T elementAfter, T elementToInsert)
+    {
+        Node<T> newNode = new Node<T>(elementToInsert);
+        if (head != null && head.Data.Equals(elementAfter))
+        {
+            newNode.Next = head;
+            head = newNode;
+            return;
+        }
+        Node<T> current = head;
+        while (current != null && current.Next != null)
+        {
+            if (current.Next.Data.Equals(elementAfter))
+            {
+                newNode.Next = current.Next;
+                current.Next = newNode;
+                return;
+            }
+            current = current.Next;
+        }
+    }
+
+    public void InsertAfter(T elementBefore, T elementToInsert)
+    {
+        Node<T> newNode = new Node<T>(elementToInsert);
+        Node<T> current = head;
+        while (current != null)
+        {
+            if (current.Data.Equals(elementBefore))
+            {
+                newNode.Next = current.Next;
+                current.Next = newNode;
+                return;
+            }
+            current = current.Next;
+        }
     }
 }
