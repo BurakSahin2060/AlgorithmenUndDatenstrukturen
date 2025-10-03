@@ -87,6 +87,12 @@ public class SingleLinkedList<T>
             }
             current = current.Next;
         }
+        if (current == null)
+        {
+            var nodeToInsert = new Node<T>(elementToInsert);
+            nodeToInsert.Next = head;
+            head = nodeToInsert;
+        }
     }
 
     public int PosOfElement(T element)
