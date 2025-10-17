@@ -1,6 +1,7 @@
 ﻿using CommonDLL;
+using System;
 
-public class DoubleLinkedList<T>
+public class DoubleLinkedList<T> where T : IComparable<T>
 {
     private Node<T> head;
     private Node<T> tail;
@@ -99,5 +100,29 @@ public class DoubleLinkedList<T>
             position++;
         }
         return -1;
+    }
+
+    public void BubbleSort()
+    {
+        if (head == null || head.Next == null)
+            return;
+
+        bool swapped;
+        do
+        {
+            swapped = false;
+            Node<T> current = head;
+            while (current.Next != null)
+            {
+                if (current.Data.CompareTo(current.Next.Data) > 0)
+                {
+                    T temp = current.Data;
+                    current.Data = current.Next.Data;
+                    current.Next.Data = temp;
+                    swapped = true;
+                }
+                current = current.Next;
+            }
+        } while (swapped);
     }
 }
