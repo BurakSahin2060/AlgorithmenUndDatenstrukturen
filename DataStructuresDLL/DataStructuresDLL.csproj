@@ -50,6 +50,10 @@
       <Project>{22fd3faf-72c8-4b0b-b95d-107743216bee}</Project>
       <Name>CommonDLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SortingAlgorithms\SortingAlgorithms.csproj">
+      <Project>{8fcd3efd-ceed-4d12-9b4e-65d76a6afb2a}</Project>
+      <Name>SortingAlgorithms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

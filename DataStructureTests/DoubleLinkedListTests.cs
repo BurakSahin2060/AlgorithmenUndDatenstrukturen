@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using System.Reflection;
 using CommonDLL;
 
 namespace DataStructureTests
@@ -26,7 +27,7 @@ namespace DataStructureTests
         private Person[] ToArray(DoubleLinkedList<Person> dll)
         {
             var result = new List<Person>();
-            var current = typeof(DoubleLinkedList<Person>).GetField("head", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(list);
+            var current = typeof(DoubleLinkedList<Person>).GetField("head", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(dll);
             while (current != null)
             {
                 result.Add((Person)current.GetType().GetProperty("Data").GetValue(current));

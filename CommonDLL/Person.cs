@@ -30,7 +30,7 @@ namespace CommonDLL
             if (other == null) return 1;
             int ageComparison = Alter.CompareTo(other.Alter);
             if (ageComparison != 0) return ageComparison;
-            return Nachname.CompareTo(other.Nachname);
+                return Nachname.CompareTo(other.Nachname);
         }
     }
 }
