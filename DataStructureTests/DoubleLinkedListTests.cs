@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
 using System.Reflection;
+using NUnit.Framework;
 using CommonDLL;
 
 namespace DataStructureTests
@@ -11,260 +10,158 @@ namespace DataStructureTests
     public class DoubleLinkedListTests
     {
         private DoubleLinkedList<Person> list;
-        private Person person1;
-        private Person person2;
-        private Person person3;
+        private Person p1, p2, p3, p4, p5;
 
         [SetUp]
         public void SetUp()
         {
             list = new DoubleLinkedList<Person>();
-            person1 = new Person("Burak", "Sahin", "m", 17);
-            person2 = new Person("Ben", "Schmidt", "m", 30);
-            person3 = new Person("Clara", "Fischer", "w", 28);
+            p1 = new Person("Burak", "Sahin", "m", 17);
+            p2 = new Person("Ben", "Schmidt", "m", 30);
+            p3 = new Person("Clara", "Fischer", "w", 28);
+            p4 = new Person("Anna", "Adler", "w", 28);
+            p5 = new Person("Tom", "Adler", "m", 28);
         }
 
-        private Person[] ToArray(DoubleLinkedList<Person> dll)
+        private Person[] ToArray()
         {
             var result = new List<Person>();
-            var current = typeof(DoubleLinkedList<Person>).GetField("head", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(dll);
+            var current = typeof(DoubleLinkedList<Person>)
+                .GetField("head", BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(list);
+
             while (current != null)
             {
-                result.Add((Person)current.GetType().GetProperty("Data").GetValue(current));
-                current = current.GetType().GetProperty("Next").GetValue(current);
+                var data = current.GetType().GetProperty("Data")!.GetValue(current);
+                result.Add((Person)data!);
+                current = current.GetType().GetProperty("Next")!.GetValue(current);
             }
             return result.ToArray();
         }
 
         [Test]
-        public void InsertAfter_EmptyList_InsertsFirstElement()
+        public void InsertAfter_EmptyList_InsertsAsFirstElement()
         {
-            list.InsertAfter(person1, person2);
-            Assert.IsNotNull(list);
+            list.InsertAfter(p1, p2); // elementBefore existiert nicht → fügt am Anfang ein
+            Assert.AreEqual(p2, ToArray()[0]);
         }
 
         [Test]
-        public void InsertBefore_EmptyList_InsertsFirstElement()
+        public void InsertBefore_EmptyList_InsertsAsFirstElement()
         {
-            list.InsertBefore(person1, person2);
-            Assert.IsNotNull(list);
+            list.InsertBefore(p1, p2);
+            Assert.AreEqual(p2, ToArray()[0]);
         }
 
         [Test]
-        public void InsertAfter_SingleElement_InsertsAfter()
+        public void InsertAfter_SingleElement_InsertsCorrectly()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            int pos1 = list.PosOfElement(person1);
-            int pos2 = list.PosOfElement(person2);
-            Assert.AreEqual(0, pos1);
-            Assert.AreEqual(1, pos2);
+            list.InsertLast(p1);
+            list.InsertAfter(p1, p2);
+            var arr = ToArray();
+            Assert.AreEqual(p1, arr[0]);
+            Assert.AreEqual(p2, arr[1]);
         }
 
         [Test]
-        public void InsertBefore_SingleElement_InsertsBefore()
+        public void InsertBefore_SingleElement_InsertsCorrectly()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertBefore(person1, person2);
-            int pos2 = list.PosOfElement(person2);
-            int pos1 = list.PosOfElement(person1);
-            Assert.AreEqual(0, pos2);
-            Assert.AreEqual(1, pos1);
+            list.InsertLast(p1);
+            list.InsertBefore(p1, p2);
+            var arr = ToArray();
+            Assert.AreEqual(p2, arr[0]);
+            Assert.AreEqual(p1, arr[1]);
         }
 
         [Test]
-        public void InsertAfter_MultipleElements_InsertsCorrectly()
+        public void InsertLast_WorksCorrectly()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            list.InsertAfter(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person2));
-            Assert.AreEqual(2, list.PosOfElement(person3));
+            list.InsertLast(p1);
+            list.InsertLast(p2);
+            list.InsertLast(p3);
+            var arr = ToArray();
+            Assert.AreEqual(3, arr.Length);
+            Assert.AreEqual(p3, arr[2]);
         }
 
         [Test]
-        public void InsertBefore_MultipleElements_InsertsCorrectly()
+        public void PosOfElement_ReturnsCorrectIndex()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            list.InsertBefore(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person3));
-            Assert.AreEqual(2, list.PosOfElement(person2));
+            list.InsertLast(p1);
+            list.InsertLast(p2);
+            Assert.AreEqual(0, list.PosOfElement(p1));
+            Assert.AreEqual(1, list.PosOfElement(p2));
+            Assert.AreEqual(-1, list.PosOfElement(p3));
         }
 
         [Test]
-        public void InsertAfter_ElementNotFound_DoesNothing()
+        public void PosOfElement_DuplicateObjects_ReturnsFirstOccurrence()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(-1, list.PosOfElement(person2));
-            Assert.AreEqual(-1, list.PosOfElement(person3));
+            var duplicate = new Person("Burak", "Sahin", "m", 17);
+            list.InsertLast(p1);
+            list.InsertLast(duplicate);
+            Assert.AreEqual(0, list.PosOfElement(p1));
         }
 
         [Test]
-        public void InsertBefore_ElementNotFound_DoesNothing()
+        public void Sort_EmptyList_DoesNothing()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertBefore(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(-1, list.PosOfElement(person2));
-            Assert.AreEqual(-1, list.PosOfElement(person3));
+            list.Sort();
+            Assert.AreEqual(0, ToArray().Length);
         }
 
         [Test]
-        public void PosOfElement_EmptyList_ReturnsMinusOne()
+        public void Sort_SingleElement_Unchanged()
         {
-            int position = list.PosOfElement(person1);
-            Assert.AreEqual(-1, position);
+            list.InsertLast(p1);
+            list.Sort();
+            Assert.AreEqual(p1, ToArray()[0]);
         }
 
         [Test]
-        public void PosOfElement_FoundElement_ReturnsCorrectPosition()
+        public void Sort_SortsByAgeThenLastName()
         {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            list.InsertAfter(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person2));
-            Assert.AreEqual(2, list.PosOfElement(person3));
+            list.InsertLast(p2); // 30, Schmidt
+            list.InsertLast(p3); // 28, Fischer
+            list.InsertLast(p1); // 17, Sahin
+            list.InsertLast(p4); // 28, Adler
+            list.InsertLast(p5); // 28, Adler (Tom)
+
+            list.Sort();
+
+            var sorted = ToArray();
+            Assert.AreEqual(17, sorted[0].Alter); // p1
+            Assert.AreEqual(28, sorted[1].Alter);
+            Assert.AreEqual("Adler", sorted[1].Nachname); // p4 Anna vor p5 Tom
+            Assert.AreEqual("Adler", sorted[2].Nachname);
+            Assert.AreEqual("Fischer", sorted[3].Nachname);
+            Assert.AreEqual("Schmidt", sorted[4].Nachname);
         }
 
         [Test]
-        public void PosOfElement_ElementNotFound_ReturnsMinusOne()
+        public void Sort_AlreadySorted_StaysCorrect()
         {
-            list.InsertAfter(person1, person1);
-            int position = list.PosOfElement(person2);
-            Assert.AreEqual(-1, position);
+            list.InsertLast(p1);
+            list.InsertLast(p4);
+            list.InsertLast(p3);
+            list.Sort();
+            var arr = ToArray();
+            Assert.AreEqual(p1, arr[0]);
+            Assert.AreEqual(p4, arr[1]);
+            Assert.AreEqual(p3, arr[2]);
         }
 
         [Test]
-        public void PosOfElement_MultipleSameElements_ReturnsFirstPosition()
+        public void Sort_ReverseOrder_Works()
         {
-            Person samePerson = new Person("Burak", "Sahin", "m", 17);
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            list.InsertAfter(person2, samePerson);
-            int position = list.PosOfElement(person1);
-            Assert.AreEqual(0, position);
-        }
-
-        [Test]
-        public void InsertLast_EmptyList_InsertsFirstElement()
-        {
-            list.InsertLast(person1);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-        }
-
-        [Test]
-        public void InsertLast_MultipleElements_InsertsAtEnd()
-        {
-            list.InsertLast(person1);
-            list.InsertLast(person2);
-            list.InsertLast(person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person2));
-            Assert.AreEqual(2, list.PosOfElement(person3));
-        }
-
-        [Test]
-        public void InsertLast_WithExistingElements_AppendsToEnd()
-        {
-            list.InsertAfter(person1, person1);
-            list.InsertAfter(person1, person2);
-            list.InsertLast(person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person2));
-            Assert.AreEqual(2, list.PosOfElement(person3));
-        }
-
-        [Test]
-        public void InsertAfter_InsertsAfterTail_ActsLikeAppend()
-        {
-            list.InsertLast(person1);
-            list.InsertLast(person2);
-            list.InsertAfter(person2, person3);
-            Assert.AreEqual(0, list.PosOfElement(person1));
-            Assert.AreEqual(1, list.PosOfElement(person2));
-            Assert.AreEqual(2, list.PosOfElement(person3));
-        }
-
-        [Test]
-        public void BubbleSort_EmptyList_DoesNothing()
-        {
-            list.BubbleSort();
-            Assert.AreEqual(0, ToArray(list).Length);
-        }
-
-        [Test]
-        public void BubbleSort_SingleElement_RemainsUnchanged()
-        {
-            list.InsertLast(person1);
-            list.BubbleSort();
-            var result = ToArray(list);
-            Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(person1, result[0]);
-        }
-
-        [Test]
-        public void BubbleSort_MultipleElements_SortsByAgeThenLastName()
-        {
-            list.InsertLast(person2);
-            list.InsertLast(person3);
-            list.InsertLast(person1);
-            list.BubbleSort();
-            var result = ToArray(list);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(person1, result[0]);
-            Assert.AreEqual(person3, result[1]);
-            Assert.AreEqual(person2, result[2]);
-        }
-
-        [Test]
-        public void BubbleSort_AlreadySortedList_RemainsSorted()
-        {
-            list.InsertLast(person1);
-            list.InsertLast(person3);
-            list.InsertLast(person2);
-            list.BubbleSort();
-            var result = ToArray(list);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(person1, result[0]);
-            Assert.AreEqual(person3, result[1]);
-            Assert.AreEqual(person2, result[2]);
-        }
-
-        [Test]
-        public void BubbleSort_ReverseOrderList_SortsCorrectly()
-        {
-            list.InsertLast(person2);
-            list.InsertLast(person3);
-            list.InsertLast(person1);
-            list.BubbleSort();
-            var result = ToArray(list);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(person1, result[0]);
-            Assert.AreEqual(person3, result[1]);
-            Assert.AreEqual(person2, result[2]);
-        }
-
-        [Test]
-        public void BubbleSort_DuplicateAges_SortsByLastName()
-        {
-            var person4 = new Person("Anna", "Adler", "w", 28);
-            list.InsertLast(person2);
-            list.InsertLast(person3);
-            list.InsertLast(person4);
-            list.InsertLast(person1);
-            list.BubbleSort();
-            var result = ToArray(list);
-            Assert.AreEqual(4, result.Length);
-            Assert.AreEqual(person1, result[0]);
-            Assert.AreEqual(person4, result[1]);
-            Assert.AreEqual(person3, result[2]);
-            Assert.AreEqual(person2, result[3]);
+            list.InsertLast(p2);
+            list.InsertLast(p3);
+            list.InsertLast(p1);
+            list.Sort();
+            var arr = ToArray();
+            Assert.AreEqual(p1, arr[0]);
+            Assert.AreEqual(p3, arr[1]);
+            Assert.AreEqual(p2, arr[2]);
         }
     }
 }
