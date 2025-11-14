@@ -1,14 +1,18 @@
 ﻿using CommonDLL;
+using SortingAlgorithms;
+using System;
 
-public class DoubleLinkedList<T>
+public class DoubleLinkedList<T> where T : IComparable<T>
 {
     private Node<T> head;
     private Node<T> tail;
+    private ISortAlgorithm<T> sortAlgorithm;
 
     public DoubleLinkedList()
     {
         head = null;
         tail = null;
+        sortAlgorithm = new BubbleSort<T>();
     }
 
     public void InsertBefore(T elementAfter, T elementToInsert)
@@ -99,5 +103,10 @@ public class DoubleLinkedList<T>
             position++;
         }
         return -1;
+    }
+
+    public void Sort()
+    {
+        sortAlgorithm.Sort(head);
     }
 }

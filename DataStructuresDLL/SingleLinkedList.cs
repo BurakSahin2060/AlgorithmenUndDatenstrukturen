@@ -1,12 +1,16 @@
 ﻿using CommonDLL;
+using SortingAlgorithms;
+using System;
 
 
-public class SingleLinkedList<T>
+public class SingleLinkedList<T> where T : IComparable<T>
 {
     private Node<T> head;
+    private ISortAlgorithm<T> sortAlgorithm;
     public SingleLinkedList()
     {
         head = null;
+        sortAlgorithm = new BubbleSort<T>();
     }
 
     public void Add(T data)
@@ -99,5 +103,10 @@ public class SingleLinkedList<T>
             position++;
         }
         return -1;
+    }
+
+    public void Sort()
+    {
+        sortAlgorithm.Sort(head);
     }
 }
