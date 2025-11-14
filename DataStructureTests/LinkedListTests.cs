@@ -3,7 +3,7 @@ using CommonDLL;
 
 namespace DataStructureTests
 {
-    public class Tests
+    public class SingleLinkedListTests
     {
         private SingleLinkedList<Person> list;
 
