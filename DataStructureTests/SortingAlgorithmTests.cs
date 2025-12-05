@@ -9,6 +9,7 @@ namespace DataStructureTests
     {
         private BubbleSort<Person> sorter;
         private Node<Person> head;
+
         [SetUp]
         public void SetUp()
         {
@@ -43,12 +44,7 @@ namespace DataStructureTests
             }
             return list.ToArray();
         }
-        //[Test]
-        //public void Sort_NullHead_DoesNothing()
-        //{
-        //    sorter.Sort(null);
-        //    Assert.Pass();
-        //}
+
         [Test]
         public void Sort_SingleNode_Unchanged()
         {
@@ -56,6 +52,7 @@ namespace DataStructureTests
             sorter.Sort(head);
             Assert.AreEqual(20, head.Data.Alter);
         }
+
         [Test]
         public void Sort_TwoElements_OutOfOrder_Swaps()
         {
@@ -67,6 +64,7 @@ namespace DataStructureTests
             Assert.AreEqual(p1, arr[0]);
             Assert.AreEqual(p2, arr[1]);
         }
+
         [Test]
         public void Sort_MultipleElements_CorrectOrder_ByAgeThenLastName()
         {
@@ -92,6 +90,7 @@ namespace DataStructureTests
             Assert.AreEqual("Fischer", sorted[4].Nachname);
             Assert.AreEqual("Schmidt", sorted[5].Nachname);
         }
+
         [Test]
         public void Sort_AlreadySorted_NoUnnecessarySwaps()
         {
@@ -102,6 +101,7 @@ namespace DataStructureTests
             Assert.AreEqual(p1, head.Data);
             Assert.AreEqual(p2, head.Next.Data);
         }
+
         [Test]
         public void Sort_DuplicateAges_UsesLastName()
         {
@@ -113,6 +113,7 @@ namespace DataStructureTests
             Assert.AreEqual("Adler", arr[0].Nachname);
             Assert.AreEqual("Zimmer", arr[1].Nachname);
         }
+
         [Test]
         public void Sort_EqualPersons_StaysStable()
         {
