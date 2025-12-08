@@ -2,111 +2,68 @@
 using SortingAlgorithms;
 using System;
 
-
-public class SingleLinkedList<T> where T : IComparable<T>
+public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<T>
 {
     private Node<T> head;
-    private ISortAlgorithm<T> sortAlgorithm;
+    private ISortStrategy<T> sortAlgorithm;
     public SingleLinkedList()
     {
         head = null;
-        sortAlgorithm = new BubbleSort<T>();
-    }
-
-    public void Add(T data)
-    {
-        Node<T> newNode = new Node<T>(data);
-        if (head == null)
-        {
-            head = newNode;
-        }
-        else
-        {
-            Node<T> current = head;
-            while (current.Next != null)
-            {
-                current = current.Next;
-            }
-            current.Next = newNode;
-        }
-    }
-
-    public bool Contains(T data)
-    {
-        Node<T> current = head;
-        while (current != null)
-        {
-            if (current.Data.Equals(data))
-            {
-                return true;
-            }
-            current = current.Next;
-        }
-        return false;
-    }
-
-    public void InsertBefore(T elementAfter, T elementToInsert)
-    {
-        Node<T> newNode = new Node<T>(elementToInsert);
-        if (head != null && head.Data.Equals(elementAfter))
-        {
-            newNode.Next = head;
-            head = newNode;
-            return;
-        }
-        Node<T> current = head;
-        while (current != null && current.Next != null)
-        {
-            if (current.Next.Data.Equals(elementAfter))
-            {
-                newNode.Next = current.Next;
-                current.Next = newNode;
-                return;
-            }
-            current = current.Next;
-        }
-    }
-
-    public void InsertAfter(T elementBefore, T elementToInsert)
-    {
-        Node<T> newNode = new Node<T>(elementToInsert);
-        Node<T> current = head;
-        while (current != null)
-        {
-            if (current.Data.Equals(elementBefore))
-            {
-                newNode.Next = current.Next;
-                current.Next = newNode;
-                return;
-            }
-            current = current.Next;
-        }
-        if (current == null)
-        {
-            var nodeToInsert = new Node<T>(elementToInsert);
-            nodeToInsert.Next = head;
-            head = nodeToInsert;
-        }
-    }
-
-    public int PosOfElement(T element)
-    {
-        Node<T> current = head;
-        int position = 0;
-        while (current != null)
-        {
-            if (current.Data.Equals(element))
-            {
-                return position;
-            }
-            current = current.Next;
-            position++;
-        }
-        return -1;
+        sortAlgorithm = new BubbleSortStrategy<T>();
     }
 
     public void Sort()
     {
-        sortAlgorithm.Sort(head);
+        sortAlgorithm.Sort(this);
+    }
+
+    public int Count()
+    {
+        int count = 0;
+        Node<T> current = head;
+        while (current != null)
+        {
+            count++;
+            current = current.Next;
+        }
+        return count;
+    }
+
+    public T Get(int index)
+    {
+        if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+        Node<T> current = head;
+        for (int i = 0; i < index; i++)
+        {
+            if (current == null) throw new ArgumentOutOfRangeException(nameof(index));
+            current = current.Next;
+        }
+        if (current == null) throw new ArgumentOutOfRangeException(nameof(index));
+        return current.Data;
+    }
+
+    public void Swap(int index1, int index2)
+    {
+        if (index1 == index2) return;
+        if (index1 > index2)
+        {
+            int temp = index1;
+            index1 = index2;
+            index2 = temp;
+        }
+        Node<T> node1 = head;
+        for (int i = 0; i < index1; i++)
+        {
+            node1 = node1.Next;
+        }
+        Node<T> node2 = node1;
+        for (int i = index1; i < index2; i++)
+        {
+            node2 = node2.Next;
+        }
+        if (node1 == null || node2 == null) throw new ArgumentOutOfRangeException();
+        T temp = node1.Data;
+        node1.Data = node2.Data;
+        node2.Data = temp;
     }
 }
