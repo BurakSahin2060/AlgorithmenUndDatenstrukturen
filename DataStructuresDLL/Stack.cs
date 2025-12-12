@@ -2,25 +2,52 @@
 using SortingAlgorithms;
 using System;
 
-public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<T>
+public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
 {
-    private Node<T> head;
+    private Node<T> top;
     private ISortStrategy<T> sortAlgorithm;
-    public SingleLinkedList()
+
+    public Stack()
     {
-        head = null;
+        top = null;
         sortAlgorithm = new BubbleSortStrategy<T>();
     }
 
-    public void Sort()
+    public void Push(T data) // Ein Element oben auf den Stapel legen
+    {
+        Node<T> newNode = new Node<T>(data);
+        newNode.Next = top;
+        top = newNode;
+    }
+
+    public T Pop() // Entfernt das oberste Element
+    {
+        if (top == null) throw new InvalidOperationException("Stack is empty");
+        T data = top.Data;
+        top = top.Next;
+        return data;
+    }
+
+    public T Peek() // Nur anschauen, nicht entfernen
+    {
+        if (top == null) throw new InvalidOperationException("Stack is empty");
+        return top.Data;
+    }
+
+    public bool IsEmpty()
+    {
+        return top == null;
+    }
+
+    public void Sort() // Den Stack sortieren
     {
         sortAlgorithm.Sort(this);
     }
 
-    public int Count()
+    public int Count() // Anzahl der Elemente zählen
     {
         int count = 0;
-        Node<T> current = head;
+        Node<T> current = top;
         while (current != null)
         {
             count++;
@@ -29,10 +56,10 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
         return count;
     }
 
-    public T Get(int index)
+    public T Get(int index) // Anzahl der Elemente zählen
     {
         if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
-        Node<T> current = head;
+        Node<T> current = top;
         for (int i = 0; i < index; i++)
         {
             if (current == null) throw new ArgumentOutOfRangeException(nameof(index));
@@ -42,7 +69,7 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
         return current.Data;
     }
 
-    public void Swap(int index1, int index2)
+    public void Swap(int index1, int index2) // Werte zwischen zwei Positionen tauschen
     {
         if (index1 == index2) return;
         if (index1 > index2)
@@ -51,7 +78,7 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
             index1 = index2;
             index2 = tempIndex;
         }
-        Node<T> node1 = head;
+        Node<T> node1 = top;
         for (int i = 0; i < index1; i++)
         {
             node1 = node1.Next;
@@ -62,8 +89,8 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
             node2 = node2.Next;
         }
         if (node1 == null || node2 == null) throw new ArgumentOutOfRangeException();
-        T temp = node1.Data;
+        T tempData = node1.Data;
         node1.Data = node2.Data;
-        node2.Data = temp;
+        node2.Data = tempData;
     }
 }
