@@ -47,9 +47,9 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
         if (index1 == index2) return;
         if (index1 > index2)
         {
-            int temp = index1;
+            int tempIndex = index1;
             index1 = index2;
-            index2 = temp;
+            index2 = tempIndex;
         }
         Node<T> node1 = head;
         for (int i = 0; i < index1; i++)

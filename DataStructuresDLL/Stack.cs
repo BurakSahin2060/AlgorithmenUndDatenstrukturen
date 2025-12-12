@@ -13,14 +13,14 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         sortAlgorithm = new BubbleSortStrategy<T>();
     }
 
-    public void Push(T data)
+    public void Push(T data) // Ein Element oben auf den Stapel legen
     {
         Node<T> newNode = new Node<T>(data);
         newNode.Next = top;
         top = newNode;
     }
 
-    public T Pop()
+    public T Pop() // Entfernt das oberste Element
     {
         if (top == null) throw new InvalidOperationException("Stack is empty");
         T data = top.Data;
@@ -28,7 +28,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         return data;
     }
 
-    public T Peek()
+    public T Peek() // Nur anschauen, nicht entfernen
     {
         if (top == null) throw new InvalidOperationException("Stack is empty");
         return top.Data;
@@ -39,12 +39,12 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         return top == null;
     }
 
-    public void Sort()
+    public void Sort() // Den Stack sortieren
     {
         sortAlgorithm.Sort(this);
     }
 
-    public int Count()
+    public int Count() // Anzahl der Elemente zählen
     {
         int count = 0;
         Node<T> current = top;
@@ -56,7 +56,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         return count;
     }
 
-    public T Get(int index)
+    public T Get(int index) // Anzahl der Elemente zählen
     {
         if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
         Node<T> current = top;
@@ -69,14 +69,14 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         return current.Data;
     }
 
-    public void Swap(int index1, int index2)
+    public void Swap(int index1, int index2) // Werte zwischen zwei Positionen tauschen
     {
         if (index1 == index2) return;
         if (index1 > index2)
         {
-            int temp = index1;
+            int tempIndex = index1;
             index1 = index2;
-            index2 = temp;
+            index2 = tempIndex;
         }
         Node<T> node1 = top;
         for (int i = 0; i < index1; i++)
@@ -89,8 +89,8 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
             node2 = node2.Next;
         }
         if (node1 == null || node2 == null) throw new ArgumentOutOfRangeException();
-        T temp = node1.Data;
+        T tempData = node1.Data;
         node1.Data = node2.Data;
-        node2.Data = temp;
+        node2.Data = tempData;
     }
 }
