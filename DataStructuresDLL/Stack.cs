@@ -7,7 +7,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
     private Node<T> top;
     private ISortStrategy<T> sortAlgorithm;
 
-    public Stack()
+    public Stack() // Konstruktor
     {
         top = null;
         sortAlgorithm = new BubbleSortStrategy<T>();
@@ -56,7 +56,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         return count;
     }
 
-    public T Get(int index) // Anzahl der Elemente zählen
+    public T Get(int index) // Position der Elemente
     {
         if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
         Node<T> current = top;
@@ -88,6 +88,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
         {
             node2 = node2.Next;
         }
+
         if (node1 == null || node2 == null) throw new ArgumentOutOfRangeException();
         T tempData = node1.Data;
         node1.Data = node2.Data;
