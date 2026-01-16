@@ -14,7 +14,6 @@ public class BinaryTree<T> : ISortableCollection<T> where T : IComparable<T>
         sortAlgorithm = new BubbleSortStrategy<T>();
     }
 
-    // Methode zum Hinzufügen eines Elements (als Binary Search Tree, um Sortierung zu unterstützen)
     public void Insert(T data)
     {
         root = InsertRec(root, data);
@@ -30,11 +29,11 @@ public class BinaryTree<T> : ISortableCollection<T> where T : IComparable<T>
 
         if (data.CompareTo(node.Data) < 0)
         {
-            node.Previous = InsertRec(node.Previous, data); // Previous als Left verwenden
+            node.Previous = InsertRec(node.Previous, data);
         }
         else if (data.CompareTo(node.Data) > 0)
         {
-            node.Next = InsertRec(node.Next, data); // Next als Right verwenden
+            node.Next = InsertRec(node.Next, data);
         }
 
         return node;
@@ -56,7 +55,7 @@ public class BinaryTree<T> : ISortableCollection<T> where T : IComparable<T>
         return 1 + CountRec(node.Previous) + CountRec(node.Next);
     }
 
-    public T Get(int index)
+    public T Get(int index) // Element an Position holen
     {
         if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
         List<T> inOrderList = new List<T>();
@@ -78,19 +77,19 @@ public class BinaryTree<T> : ISortableCollection<T> where T : IComparable<T>
         inOrderNodes[index2].Data = temp;
     }
 
-    private void InOrderRec(Node<T> node, List<T> list)
+    private void InOrderRec(Node<T> node, List<T> list) // Sammeln der Werte
     {
         if (node == null) return;
-        InOrderRec(node.Previous, list); // Left
+        InOrderRec(node.Previous, list);
         list.Add(node.Data);
-        InOrderRec(node.Next, list); // Right
+        InOrderRec(node.Next, list);
     }
 
-    private void InOrderNodesRec(Node<T> node, List<Node<T>> list)
+    private void InOrderNodesRec(Node<T> node, List<Node<T>> list) // Sammeln der Knoten
     {
         if (node == null) return;
-        InOrderNodesRec(node.Previous, list); // Left
+        InOrderNodesRec(node.Previous, list);
         list.Add(node);
-        InOrderNodesRec(node.Next, list); // Right
+        InOrderNodesRec(node.Next, list);
     }
 }
