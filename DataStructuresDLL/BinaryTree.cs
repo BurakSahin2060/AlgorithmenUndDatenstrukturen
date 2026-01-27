@@ -11,7 +11,7 @@ public class BinaryTree<T> : ISortableCollection<T> where T : IComparable<T>
     public BinaryTree()
     {
         root = null;
-        sortAlgorithm = new BubbleSortStrategy<T>();
+        sortAlgorithm = SortStrategyFactory.CreateDefault<T>(); //  Factory Pattern
     }
 
     public void Insert(T data)

@@ -6,10 +6,11 @@ public class SingleLinkedList<T> : ISortableCollection<T> where T : IComparable<
 {
     private Node<T> head;
     private ISortStrategy<T> sortAlgorithm;
+
     public SingleLinkedList()
     {
         head = null;
-        sortAlgorithm = new BubbleSortStrategy<T>();
+        sortAlgorithm = SortStrategyFactory.CreateDefault<T>(); //  Factory Pattern
     }
 
     public void Sort()
