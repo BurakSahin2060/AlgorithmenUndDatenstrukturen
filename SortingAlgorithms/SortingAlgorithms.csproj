@@ -46,6 +46,7 @@
     <Compile Include="InsertionSort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickSort.cs" />
+    <Compile Include="SortStrategyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonDLL\CommonDLL.csproj">

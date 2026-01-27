@@ -10,7 +10,7 @@ public class Stack<T> : ISortableCollection<T> where T : IComparable<T>
     public Stack() // Konstruktor
     {
         top = null;
-        sortAlgorithm = new BubbleSortStrategy<T>();
+        sortAlgorithm = SortStrategyFactory.CreateDefault<T>(); //  Factory Pattern
     }
 
     public void Push(T data) // Ein Element oben auf den Stapel legen

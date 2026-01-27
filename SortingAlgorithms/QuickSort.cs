@@ -11,13 +11,13 @@ namespace SortingAlgorithms
             QuickSort(c, 0, c.Count() - 1);
         }
 
-        private void QuickSort(ISortableCollection<T> c, int links, int rechts)
+        private void QuickSort(ISortableCollection<T> c, int links, int rechts) // rekursive Methode
         {
             if (links < rechts)
             {
                 int teiler = Teile(c, links, rechts);
-                QuickSort(c, links, teiler - 1);
-                QuickSort(c, teiler + 1, rechts);
+                QuickSort(c, links, teiler - 1); // vor dem pivot
+                QuickSort(c, teiler + 1, rechts); // nach dem pivot
             }
         }
 

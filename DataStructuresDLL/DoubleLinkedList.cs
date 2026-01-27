@@ -12,7 +12,7 @@ public class DoubleLinkedList<T> : ISortableCollection<T> where T : IComparable<
     {
         head = null;
         tail = null;
-        sortAlgorithm = new BubbleSortStrategy<T>();
+        sortAlgorithm = SortStrategyFactory.CreateDefault<T>(); //  Factory Pattern
     }
 
     public void Sort()

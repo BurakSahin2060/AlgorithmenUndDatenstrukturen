@@ -14,7 +14,7 @@ namespace DataStructureAndSortingTests
         {
             front = null;
             rear = null;
-            sortAlgorithm = new BubbleSortStrategy<T>();
+            sortAlgorithm = SortStrategyFactory.CreateDefault<T>(); //  Factory Pattern
         }
 
         public void Enqueue(T data) // Element hinzufügen
