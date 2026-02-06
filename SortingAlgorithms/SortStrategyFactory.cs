@@ -5,9 +5,6 @@ namespace SortingAlgorithms
 {
     public class SortStrategyFactory
     {
-        /// <summary>
-        /// Erstellt einen Sortieralgorithmus basierend auf dem Namen
-        /// </summary>
         public static ISortStrategy<T> Create<T>(string algorithmName) where T : IComparable<T>
         {
             switch (algorithmName.ToLower())
@@ -29,17 +26,11 @@ namespace SortingAlgorithms
             }
         }
 
-        /// <summary>
-        /// Erstellt den Standard-Sortieralgorithmus (BubbleSort)
-        /// </summary>
         public static ISortStrategy<T> CreateDefault<T>() where T : IComparable<T>
         {
             return new BubbleSortStrategy<T>();
         }
 
-        /// <summary>
-        /// Alternative: Erstellt einen Sortieralgorithmus basierend auf einem Enum
-        /// </summary>
         public static ISortStrategy<T> Create<T>(SortAlgorithmType type) where T : IComparable<T>
         {
             switch (type)
@@ -62,9 +53,6 @@ namespace SortingAlgorithms
         }
     }
 
-    /// <summary>
-    /// Enum für die verfügbaren Sortieralgorithmen
-    /// </summary>
     public enum SortAlgorithmType
     {
         BubbleSort,
